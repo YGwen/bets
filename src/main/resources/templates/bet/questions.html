@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorate="~{_layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title th:text="#{bet.listOpen.title}"></title>
 </head>
 <body>
-$END$
+<div layout:fragment="content">
+    <div th:replace="~{fragments/alert :: alert_headline}"></div>
+
+    <h1 th:if="${not #lists.isEmpty(questionsToAnswer)}" th:text="#{extra_bets.title}"></h1>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4" th:each="question : ${questionsToAnswer}">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span class="bold" th:text="${question.value}"></span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <span th:text="${#temporals.format(question.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+                            <br/>
+                        </div>
+                        <div class="col-xs-3">
+                            <a href="#" th:href="@{'/bet/createOrUpdate/' + ${question.questionId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${question.hasStarted()}? 'disabled'"
+                               class="btn btn-success" role="button">
+                                <span class="fa fa-thumbs-o-up fa-lg"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/questions/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
+    <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+</div>
 </body>
 </html>

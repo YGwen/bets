@@ -250,4 +250,48 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="11" author="Gwenyto">
+
+		<createTable tableName="CUSTOM_BET_ANSWER">
+			<column name="CUSTOM_BET_ANSWER_ID" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="CUSTOM_BET_QUESTION_ID" type="BIGINT" />
+			<column name="VALUE" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="CUSTOM_BET_QUESTION">
+			<column name="CUSTOM_BET_QUESTION_ID" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VALUE" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="POINTS" type="BIGINT" />
+			<column name="ANSWER_ID" type="BIGINT" />
+			<column name="KICK_OFF_DATE" type="DATETIME" />
+		</createTable>
+
+		<createTable tableName="CUSTOM_BET">
+			<column name="CUSTOM_BET_ID" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="CUSTOM_BET_ANSWER_ID" type="BIGINT" />
+			<column name="CUSTOM_BET_QUESTION_ID" type="BIGINT" />
+			<column name="points" type="int" />
+			<column name="USER_NAME" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addUniqueConstraint columnNames="USER_NAME, CUSTOM_BET_ID" tableName="CUSTOM_BET" constraintName="custom_idx_bet" />
+		<createIndex tableName="CUSTOM_BET" indexName="idx_user_name_cb">
+			<column name="user_name" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+		</createIndex>
+
+	</changeSet>
+
 </databaseChangeLog>

@@ -25,7 +25,7 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 
 		log.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
 
-		Locale.setDefault(Locale.GERMANY);
+		Locale.setDefault(Locale.ENGLISH);
 		log.info("Setting default locale to: {}", Locale.getDefault());
 	}
 

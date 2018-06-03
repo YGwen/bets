@@ -1,6 +1,7 @@
 # FredBet
 
 ## What´s FredBet?
+Original Repo is : https://github.com/fred4jupiter/fredbet
 
 Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devices.
 

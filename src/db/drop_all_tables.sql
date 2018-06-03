@@ -1,6 +1,9 @@
 drop table bet;
 drop table app_user;
 drop table matches;
+drop table custom_bet;
+drop table custom_bet_question;
+drop table custom_bet_answer;
 drop table persistent_logins;
 drop table user_roles;
 drop table schema_version;

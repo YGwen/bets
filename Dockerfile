@@ -1,3 +1,8 @@
+FROM maven:3.5.3-jdk-9
+WORKDIR .
+RUN mvn clean install
+COPY src/main/target .
+
 FROM openjdk:9-jre-slim
 
 LABEL maintainer="Michael Staehler"
@@ -18,7 +23,7 @@ ENV JAVA_OPTS="-Xms256m -Xmx1024m -Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY target/fredbet.jar /home/fred/fredbet.jar
+COPY COPY --from=0 fredbet.jar /home/fred/fredbet.jar
 
 RUN sh -c 'touch /home/fred/fredbet.jar'
 
