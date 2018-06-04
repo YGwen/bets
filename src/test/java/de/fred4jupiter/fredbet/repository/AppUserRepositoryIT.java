@@ -33,21 +33,6 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 	}
 
 	@Test
-	public void fetchUsersWithLastLoginSortAsc() {
-		appUserRepository.deleteAll();
-
-		appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("robert", "robert")
-				.withLastLogin(LocalDateTime.now()).build());
-		appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("albert", "albert")
-				.withLastLogin(LocalDateTime.now().plusHours(1)).build());
-
-		List<AppUser> resultList = appUserRepository.fetchLastLoginUsers();
-		assertEquals(2, resultList.size());
-		assertEquals("albert", resultList.get(0).getUsername());
-		assertEquals("robert", resultList.get(1).getUsername());
-	}
-
-	@Test
 	public void appUserCanHaveMultipleRoles() {
 		AppUser appUser = AppUserBuilder.create().withDemoData().withRole(FredBetRole.ROLE_USER).withRole(FredBetRole.ROLE_ADMIN).build();
 		appUser = appUserRepository.save(appUser);

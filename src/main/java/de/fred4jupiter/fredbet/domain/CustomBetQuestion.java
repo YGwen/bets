@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @Table(name = "CUSTOM_BET_QUESTION")
 public class CustomBetQuestion {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOM_BET_QUESTION_ID")
-    private Long id;
+    private Long questionId;
 
     @Column(name = "VALUE")
     private String value;
@@ -30,11 +30,6 @@ public class CustomBetQuestion {
     @Column(name = "KICK_OFF_DATE")
     private LocalDateTime kickOffDate;
 
-    public CustomBetQuestion(String value, Long points, LocalDateTime kickOffDate) {
-        this.value = value;
-        this.points = points;
-        this.kickOffDate = kickOffDate;
-    }
 
     public boolean hasStarted() {
         return LocalDateTime.now().isAfter(kickOffDate);
@@ -48,12 +43,20 @@ public class CustomBetQuestion {
         return !hasStarted() && !hasResultSet();
     }
 
-    public Long getId() {
-        return id;
+    public Long getQuestionId() {
+        return questionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
+
+    public Long getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Long answerId) {
+        this.answerId = answerId;
     }
 
     public String getValue() {
@@ -92,7 +95,7 @@ public class CustomBetQuestion {
         }
         CustomBetQuestion customBetQuestion = (CustomBetQuestion) obj;
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(id, customBetQuestion.id);
+        builder.append(questionId, customBetQuestion.questionId);
         builder.append(value, customBetQuestion.value);
         builder.append(points, customBetQuestion.points);
         builder.append(kickOffDate, customBetQuestion.kickOffDate);
@@ -103,7 +106,7 @@ public class CustomBetQuestion {
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(id);
+        builder.append(questionId);
         builder.append(value);
         builder.append(points);
         builder.append(kickOffDate);
@@ -113,7 +116,7 @@ public class CustomBetQuestion {
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("id", id);
+        builder.append("questionId", questionId);
         builder.append("userName", value);
         builder.append("points", points);
         builder.append("kickOffDate", kickOffDate);

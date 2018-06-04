@@ -27,11 +27,6 @@ public class CustomBet {
     @Column(name = "POINTS")
     private Integer points;
 
-    public CustomBet(String userName, Long questionId, Long answerId) {
-        this.userName = userName;
-        this.questionId = questionId;
-        this.answerId = answerId;
-    }
 
     public Long getId() {
         return id;

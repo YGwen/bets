@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Table(name = "CUSTOM_BET_ANSWER")
 public class CustomBetAnswer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOM_BET_ANSWER_ID")
-    private Long id;
+    private Long answerId;
 
     @Column(name = "CUSTOM_BET_QUESTION_ID")
     private Long questionId;
@@ -21,8 +21,27 @@ public class CustomBetAnswer {
     @Column(name = "VALUE")
     private String value;
 
-    public CustomBetAnswer(Long questionId, String value) {
+    public Long getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Long answerId) {
+        this.answerId = answerId;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -38,7 +57,7 @@ public class CustomBetAnswer {
         }
         CustomBetAnswer customBetAnswer = (CustomBetAnswer) obj;
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(id, customBetAnswer.id);
+        builder.append(answerId, customBetAnswer.answerId);
         builder.append(questionId, customBetAnswer.questionId);
         builder.append(value, customBetAnswer.value);
         return builder.isEquals();
@@ -48,7 +67,7 @@ public class CustomBetAnswer {
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(id);
+        builder.append(answerId);
         builder.append(questionId);
         builder.append(value);
         return builder.toHashCode();
@@ -57,7 +76,7 @@ public class CustomBetAnswer {
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("id", id);
+        builder.append("answerId", answerId);
         builder.append("questionId", questionId);
         builder.append("value", value);
         return builder.toString();

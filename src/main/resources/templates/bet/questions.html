@@ -8,9 +8,9 @@
 <div layout:fragment="content">
     <div th:replace="~{fragments/alert :: alert_headline}"></div>
 
-    <h1 th:if="${not #lists.isEmpty(questionsToAnswer)}" th:text="#{extra_bets.title}"></h1>
+    <h1 th:if="${not #lists.isEmpty(customBetQuestionCommand)}" th:text="#{extra_bets.title}"></h1>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4" th:each="question : ${questionsToAnswer}">
+        <div class="col-xs-12 col-sm-6 col-md-4" th:each="question : ${customBetQuestionCommand}">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
@@ -20,12 +20,33 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-9">
+                        <div class="col-xs-12">
+                            <span class="fa fa-thumbs-o-up fa-2x"></span>
+                            <span class="bold" th:text="${question.userAnswer}"></span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span class="fa fa-trophy fa-2x"></span>
+                            <span class="bold" th:text="${question.answer}"></span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
                             <span th:text="${#temporals.format(question.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                             <br/>
                         </div>
                         <div class="col-xs-3">
-                            <a href="#" th:href="@{'/bet/createOrUpdate/' + ${question.questionId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${question.hasStarted()}? 'disabled'"
+                            <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/questions/' + ${question.questionId}}"
+                               class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </div>
+                        <div class="col-xs-3">
+                            <a href="#" th:href="@{'/questions/bet/' + ${question.questionId}}"
+                               th:classappend="${question.hasStarted()}? 'disabled'"
                                class="btn btn-success" role="button">
                                 <span class="fa fa-thumbs-o-up fa-lg"></span>
                             </a>
@@ -35,7 +56,8 @@
             </div>
         </div>
     </div>
-    <a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/questions/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
+    <a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/questions/create}" class="btn btn-primary" role="button"
+       th:text="'Create a question'"></a>
     <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 </div>
 </body>
