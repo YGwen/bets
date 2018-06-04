@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 
@@ -58,10 +59,12 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 		final int penaltyPoints = calculatePenaltyPointsFor(match, bet);
 		
 		final int subtotal = standardPoints + penaltyPoints;
-		if (bet.isJoker()) {
-			return subtotal * JOKER_MULTIPLIER;
+//		if (bet.isJoker()) {
+//			return subtotal * JOKER_MULTIPLIER;
+//		}
+		if(match.getGroup().ordinal() > Group.GROUP_H.ordinal()){
+			return subtotal * 2;
 		}
-		
 		return subtotal;
 	}
 

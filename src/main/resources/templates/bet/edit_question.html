@@ -50,6 +50,11 @@
                     </div>
                     <input type="button" class="btn btn-primary" id="addNew" value="Add"/>
                 </div>
+                <div class="panel-body">
+                    <select th:field="*{answerId}" class="form-control">
+                        <option th:each="answer : *{answers}" th:value="${answer.answerId}" th:text="${answer.value}"></option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
                     <a href="#" th:href="'/questions/open'" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>

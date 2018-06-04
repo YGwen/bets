@@ -56,7 +56,10 @@ public class QuestionsService {
 
 	public CustomBetQuestionCommand findById(Long id) {
 		CustomBetQuestion question = customBetQuestionRepository.getOne(id);
-		return toCustomBetQuestionCommand(question);
+		List<CustomBetAnswer> answers = customBetAnswerRepository.findByIdForBet(id);
+		CustomBetQuestionCommand command = toCustomBetQuestionCommand(question);
+		command.setAnswers(answers);
+		return command;
 	}
 
 	public CustomBetCommand findByIdForBet(Long id, String username) {

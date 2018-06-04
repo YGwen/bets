@@ -2,11 +2,14 @@ package de.fred4jupiter.fredbet.web.bet;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+
+import de.fred4jupiter.fredbet.domain.CustomBetAnswer;
 
 public class CustomBetQuestionCommand {
 
@@ -29,6 +32,16 @@ public class CustomBetQuestionCommand {
     private String answer;
 
     private String userAnswer;
+
+    private List<CustomBetAnswer> answers;
+
+    public List<CustomBetAnswer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<CustomBetAnswer> answers) {
+        this.answers = answers;
+    }
 
     public boolean hasStarted() {
         return LocalDateTime.now().isAfter(kickOffDate);

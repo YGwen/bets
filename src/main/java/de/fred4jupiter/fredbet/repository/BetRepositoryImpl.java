@@ -22,14 +22,15 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 	@Override
 	public List<UsernamePoints> calculateRanging() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Select user_name, sum(total) as sum_all from (");
+		builder.append("Select user_name, sum(total) as sum_all from ( ");
 		builder.append("(Select user_name, sum(points) as total ");
 		builder.append("from bet where user_name not like :username group by user_name order by total desc) ");
 		builder.append("union all ");
-		builder.append("(Select user_name, sum(points_one + points_two + points_three) as total ");
-		builder.append("from extra_bet where user_name not like :username group by user_name order by total desc) ");
+		builder.append("(select b.user_name, sum(q.points) as total from custom_bet_question q ");
+		builder.append("join public.custom_bet b on b.custom_bet_question_id=q.custom_bet_question_id ");
+		builder.append("where b.custom_bet_answer_id=q.answer_id and user_name not like :username group by user_name order by total desc) ");
 		builder.append(") as complete ");
-		builder.append("group by user_name order by sum_all desc");
+		builder.append("group by user_name order by sum_all desc ");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("username", FredbetConstants.TECHNICAL_USERNAME);
