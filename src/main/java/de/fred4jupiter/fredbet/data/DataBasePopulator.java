@@ -27,6 +27,8 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.TeamBuilder;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetRole;
@@ -34,6 +36,7 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.service.TeamService;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
@@ -76,11 +79,15 @@ public class DataBasePopulator {
 	@Autowired
 	private JokerService jokerService;
 
+	@Autowired
+	private TeamService teamService;
+
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
 		if (!isRunInIntegrationTest()) {
 			createDefaultUsers();
 			addRulesIfEmpty();
+			createDefaultTeam();
 		}
 
 		if (!isRunInIntegrationTest() && runtimeConfigurationService.loadRuntimeConfig().isCreateDemoData()) {
@@ -93,6 +100,13 @@ public class DataBasePopulator {
 
 	private boolean isRunInIntegrationTest() {
 		return environment.acceptsProfiles(FredBetProfile.INTEGRATION_TEST);
+	}
+
+	public void createDefaultTeam() {
+
+		AppUser michael = userService.findAll().stream().filter(u -> u.getUsername().equals("michael")).findFirst().get();
+		Team team = TeamBuilder.create().withName("Michael's team").withCaptain(michael).build();
+		userService.updateUser(michael.getId(), teamService.createTeam(team), 10);
 	}
 
 	public void createRandomMatches() {

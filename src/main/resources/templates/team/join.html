@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{team.join.title}"></title>
+    <script type="text/javascript" th:src="@{/js/pages/team.js}" charset="UTF-8"></script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:replace="~{fragments/alert :: alert_headline}"></div>
+    <form id="userForm" th:action="@{/team/join}" th:object="${joinTeamCommand}" action="#" method="post" role="form">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="form-group">
+                    <label for="availableTeams" th:text="#{team.join.name} + ':'"></label>
+                    <select id="availableTeams" th:field="*{selectedTeam}" class="form-control" onchange="retrieveTeamDetails(); removeAlreadyAssignedShirtNumbers();">
+                        <option th:each="team : ${availableTeams}"
+                                th:value="${team.id}"
+                                th:text="${team}">
+                        </option>
+                    </select>
+                    <label for="shirtNumber" th:text="#{team.shirt.number} + ':'"></label>
+                    <select id="shirtNumber" th:field="*{selectedShirtNumber}" class="form-control">
+                        <option th:each="number : ${availableShirtNumbers}"
+                                th:value="${number.number}"
+                                th:text="${number.optionText}">
+                        </option>
+                    </select>
+                </div>
+
+                <div id="teamDetails">
+
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" th:text="#{button.join}"></button>
+                    <a href="#" th:href="@{/team}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+</div>
+</body>
+</html>

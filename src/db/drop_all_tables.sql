@@ -7,3 +7,4 @@ drop table custom_bet_answer;
 drop table persistent_logins;
 drop table user_roles;
 drop table schema_version;
+drop table team;

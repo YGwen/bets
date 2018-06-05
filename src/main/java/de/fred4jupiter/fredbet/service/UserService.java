@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
@@ -99,6 +100,16 @@ public class UserService {
 		}
 
 		appUser.setChild(isChild);
+		appUserRepository.save(appUser);
+		return appUser;
+	}
+
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+	public AppUser updateUser(Long userId, Team team, int shirtNumber) {
+		Assert.notNull(userId, "userId must be given");
+		AppUser appUser = findByUserId(userId);
+		appUser.setTeam(team);
+		appUser.setShirtNumber(shirtNumber);
 		appUserRepository.save(appUser);
 		return appUser;
 	}
@@ -193,4 +204,5 @@ public class UserService {
 			this.securityService.getCurrentUser().setUsername(newUsername);
 		}
 	}
+
 }

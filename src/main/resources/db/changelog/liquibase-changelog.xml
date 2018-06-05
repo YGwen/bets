@@ -250,7 +250,45 @@
 		</addColumn>
 	</changeSet>
 
-	<changeSet id="11" author="Gwenyto">
+	<changeSet id="11" author="cmenetri">
+		<createTable tableName="team">
+			<column name="team_id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="team_name" type="varchar(30)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="team_captain" type="BIGINT">
+				<constraints nullable="false" unique="true" />
+			</column>
+		</createTable>
+
+		<addColumn tableName="app_user">
+			<column name="team_id" type="bigint" />
+		</addColumn>
+		<addColumn tableName="app_user">
+			<column name="shirt_number" type="int" />
+		</addColumn>
+
+		<addUniqueConstraint columnNames="team_captain" tableName="team" constraintName="idx_team_captain" />
+		<addUniqueConstraint columnNames="shirt_number, team_id" tableName="app_user" constraintName="idx_shirt" />
+
+		<createIndex tableName="team" indexName="idx_team_captain">
+			<column name="team_captain" type="BIGINT">
+				<constraints nullable="false" unique="true" />
+			</column>
+		</createIndex>
+
+		<addForeignKeyConstraint baseTableName="team" baseColumnNames="team_captain"
+								 constraintName="FK_team_captain" referencedTableName="app_user" referencedColumnNames="user_id" />
+
+		<addForeignKeyConstraint baseTableName="app_user" baseColumnNames="team_id"
+								 constraintName="FK_team_id" referencedTableName="team" referencedColumnNames="team_id" />
+
+
+	</changeSet>
+
+	<changeSet id="12" author="Gwenyto">
 
 		<createTable tableName="CUSTOM_BET_ANSWER">
 			<column name="CUSTOM_BET_ANSWER_ID" type="BIGINT" autoIncrement="true">

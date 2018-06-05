@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{team.list.title}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="~{fragments/alert :: alert_headline}"></div>
+
+    <th:block th:if="${team != null}">
+        <div class="row" th:replace="~{fragments/teamDetails :: teamDetails(${team})}">
+        </div>
+    </th:block>
+
+
+    <div class="row" th:if="${team == null}">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <a class="btn btn-primary" role="button" th:href="@{/team/create}" th:text="#{team.createTeam}"></a>
+            or
+            <a class="btn btn-primary" role="button" th:href="@{/team/join}" th:text="#{team.joinTeam}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

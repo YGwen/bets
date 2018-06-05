@@ -6,11 +6,13 @@ public enum RankingSelection {
 
 	ONLY_CHILDREN("child"),
 
-	ONLY_ADULTS("adult");
+	ONLY_ADULTS("adult"),
+
+	TEAM("team");
 
 	private String mode;
 
-	private RankingSelection(String mode) {
+	RankingSelection(String mode) {
 		this.mode = mode;
 	}
 

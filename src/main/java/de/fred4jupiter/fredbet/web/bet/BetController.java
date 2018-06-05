@@ -77,9 +77,11 @@ public class BetController {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 
+/*
 		if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName())) {
 			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
 		}
+*/
 
 		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
 				.collect(Collectors.toList());

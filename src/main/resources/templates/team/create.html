@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{team.create.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div th:replace="~{fragments/alert :: alert_headline}"></div>
+			<form id="userForm" th:action="@{/team/create}" th:object="${createTeamCommand}" action="#" method="post" role="form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div class="form-group">
+							<label for="teamName" th:text="#{team.create.name} + ':'"></label>
+							<input id="teamName" type="text" th:field="*{teamName}" class="form-control" size="30" maxlength="30" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamName')}" th:errors="*{teamName}">teamName Error</p>
+
+							<label for="shirtNumber" th:text="#{team.shirt.number} + ':'"></label>
+							<select id="shirtNumber" th:field="*{shirtNumber}" class="form-control">
+								<option th:each="number : ${availableShirtNumbers}"
+										th:value="${number.number}"
+										th:text="${number.optionText}">
+								</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+							<a href="#" th:href="@{/team}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+						</div>
+					</div>
+				</div>
+			</form>
+			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		</div>
+	</body>
+</html>

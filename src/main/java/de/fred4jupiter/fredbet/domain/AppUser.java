@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -31,6 +32,7 @@ import org.springframework.util.CollectionUtils;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetRole;
+import de.fred4jupiter.fredbet.web.team.Position;
 
 /**
  * 
@@ -73,6 +75,13 @@ public class AppUser implements UserDetails {
 	
 	@Column(name = "FIRST_LOGIN")
 	private boolean firstLogin;
+
+	@ManyToOne(targetEntity = Team.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
+
+	@Column(name = "SHIRT_NUMBER")
+	private int shirtNumber;
 
 	@PersistenceConstructor
 	protected AppUser() {
@@ -226,6 +235,10 @@ public class AppUser implements UserDetails {
 		return createdAt;
 	}
 
+	public Team getTeam() {
+		return team;
+	}
+
 	@PrePersist
 	private void prePersist() {
 		if (this.createdAt == null) {
@@ -260,6 +273,20 @@ public class AppUser implements UserDetails {
 	public void setFirstLogin(boolean firstLogin) {
 		this.firstLogin = firstLogin;
 	}
-	
-	
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	public int getShirtNumber() {
+		return shirtNumber;
+	}
+
+	public void setShirtNumber(int shirtNumber) {
+		this.shirtNumber = shirtNumber;
+	}
+
+	public Position getPosition() {
+		return Position.from(shirtNumber);
+	}
 }

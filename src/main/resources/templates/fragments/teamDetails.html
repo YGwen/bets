@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="teamDetails(team)" class="teamDetails">
+
+    <h1 th:text="${team.name}"></h1>
+
+    <div class="table-responsive">
+        <table class="table">
+            <tr class="active">
+                <th th:text="Captain"></th>
+                <th th:text="Shirt"></th>
+                <th th:text="Position"></th>
+                <th th:text="Username"></th>
+            </tr>
+            <tr th:each="user,status : ${team.members}">
+                <td th:text="${team.captain == user} ? '&copy;' : ''"></td>
+                <td th:text="${user.shirtNumber}"></td>
+                <td th:text="${user.position}"></td>
+                <td th:text="${user.username}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
