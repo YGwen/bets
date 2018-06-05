@@ -54,7 +54,7 @@ public class ExtraPointsCalculationServiceUT {
 
 		extraBet = new ExtraBet();
 		extraBet.setUserName("Alfredo");
-		extraBet.setFinalWinner(Country.GERMANY);
+		extraBet.setFinalWinner(Country.ENGLISHY);
 		extraBet.setSemiFinalWinner(Country.FRANCE);
 		extraBet.setThirdFinalWinner(Country.SPAIN);
 	}
@@ -97,7 +97,7 @@ public class ExtraPointsCalculationServiceUT {
 		when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
 		
 		match.setGroup(Group.FINAL);
-		match.setCountryOne(Country.GERMANY);
+		match.setCountryOne(Country.ENGLISHY);
 		match.setCountryTwo(Country.FRANCE);
 		match.setGoalsTeamOne(2);
 		match.setGoalsTeamTwo(1);		
@@ -119,10 +119,10 @@ public class ExtraPointsCalculationServiceUT {
 	public void gameOfThirdCorrect() {
 		when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
 		
-		extraBet.setThirdFinalWinner(Country.GERMANY);
+		extraBet.setThirdFinalWinner(Country.ENGLISHY);
 		
 		match.setGroup(Group.GAME_FOR_THIRD);
-		match.setCountryOne(Country.GERMANY);
+		match.setCountryOne(Country.ENGLISHY);
 		match.setCountryTwo(Country.FRANCE);
 		match.setGoalsTeamOne(2);
 		match.setGoalsTeamTwo(1);		

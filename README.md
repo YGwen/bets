@@ -7,21 +7,19 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 
 ## Features
 
-- simple betting of football championchips
+- simple betting of football championships
 - responsive design (mobile first design)
 - extra betting of 1st, 2nd and 3rd winner
 - image gallery (image storage support: filesystem, database, AWS S3)
 - user profile image
-- multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
+- multiple database types supported (H2, MariaDB, MySQL, PostgreSQL)
 - integrated user administration
 - rich text editor for rules, prices and misc pages
 - points statistic
 - display other users bets after match kickoff
 - ranking page
-- Microsoft Excel match import (ready to use world championchip 2018 template available)
+- Microsoft Excel match import (ready to use world championship 2018 template available)
 - Microsoft Excel bets, statistic export
-- language switcher (supported languages: englisch, german (by now))
-- ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
 

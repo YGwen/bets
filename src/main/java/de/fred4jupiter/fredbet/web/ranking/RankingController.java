@@ -27,7 +27,7 @@ public class RankingController {
 
 	@RequestMapping
 	public ModelAndView list(ModelMap modelMap) {
-		return queryRanking(modelMap, RankingSelection.MIXED);
+		return queryRanking(modelMap, RankingSelection.INDIVIDUAL);
 	}
 
 	@RequestMapping("/{mode}")
@@ -37,7 +37,7 @@ public class RankingController {
 
 	private ModelAndView queryRanking(ModelMap modelMap, RankingSelection rankingSelection) {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(rankingSelection);
-		if (Validator.isEmpty(rankings) && RankingSelection.MIXED.equals(rankingSelection)) {
+		if (Validator.isEmpty(rankings)) {
 			messageUtil.addInfoMsg(modelMap, "ranking.noRankings");
 			return new ModelAndView("ranking/list", "rankings", rankings);
 		}

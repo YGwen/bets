@@ -25,7 +25,7 @@ public class CountryServiceIT extends AbstractIntegrationTest {
 
 	@Test
 	public void availableCountriesDoesNotContainNoneEntry() {
-		List<Country> countries = countryService.getAvailableCountriesSortedWithoutNoneEntry(Locale.GERMAN);
+		List<Country> countries = countryService.getAvailableCountriesSortedWithoutNoneEntry(Locale.ENGLISH);
 		assertNotNull(countries);
 
 		assertThat(countries, not(hasItem(Country.NONE)));
@@ -35,7 +35,7 @@ public class CountryServiceIT extends AbstractIntegrationTest {
 
 	@Test
 	public void getAvailableCountries() {
-		List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(Locale.GERMAN);
+		List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(Locale.ENGLISH);
 		assertNotNull(countries);
 
 		assertThat(countries, hasItem(Country.NONE));
