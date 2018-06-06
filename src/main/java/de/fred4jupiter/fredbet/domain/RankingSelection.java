@@ -2,11 +2,7 @@ package de.fred4jupiter.fredbet.domain;
 
 public enum RankingSelection {
 
-	MIXED("mixed"),
-
-	ONLY_CHILDREN("child"),
-
-	ONLY_ADULTS("adult"),
+	INDIVIDUAL("individual"),
 
 	TEAM("team");
 

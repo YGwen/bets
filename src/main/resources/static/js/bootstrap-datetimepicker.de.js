@@ -1,5 +1,5 @@
 /**
- * German translation for bootstrap-datetimepicker
+ * ENGLISH translation for bootstrap-datetimepicker
  * Sam Zurcher <sam@orelias.ch>
  */
 ;(function($){

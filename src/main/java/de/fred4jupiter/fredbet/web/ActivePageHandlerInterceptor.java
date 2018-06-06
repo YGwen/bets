@@ -19,7 +19,7 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 
 	private static final String CSS_ACTIVE = "active";
 
-	private static final String PAGE_STATE_REFIX = "pageState_";
+	private static final String PAGE_STATE_PREFIX = "pageState_";
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
@@ -35,35 +35,35 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 
 		final String page = StringUtils.substring(requestURI, 1);
 		final String replaced = StringUtils.replace(page, "/", "_");
-		modelAndView.addObject(PAGE_STATE_REFIX + replaced, CSS_ACTIVE);
+		modelAndView.addObject(PAGE_STATE_PREFIX + replaced, CSS_ACTIVE);
 
 		// add top navigation items with submenus
 
 		// Tippen
 		if (requestURI.contains("/bet/")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "betting", CSS_ACTIVE);
+			modelAndView.addObject(PAGE_STATE_PREFIX + "betting", CSS_ACTIVE);
 		}
 
 		// Gruppen
 		if (requestURI.contains("group")) {
 			if (containsMainGroups(requestURI) || containsFinalGroups(requestURI)) {
-				modelAndView.addObject(PAGE_STATE_REFIX + "group", CSS_ACTIVE);
+				modelAndView.addObject(PAGE_STATE_PREFIX + "group", CSS_ACTIVE);
 			}
 		}
 
 		// Administration
 		if (requestURI.contains("user") || requestURI.contains("buildinfo") || requestURI.contains("administration")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "administrationMenu", CSS_ACTIVE);
+			modelAndView.addObject(PAGE_STATE_PREFIX + "administrationMenu", CSS_ACTIVE);
 		}
 
 		// Infos
 		if (requestURI.contains("info/")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "info", CSS_ACTIVE);
+			modelAndView.addObject(PAGE_STATE_PREFIX + "info", CSS_ACTIVE);
 		}
 
 		// user profile
 		if (requestURI.contains("profile")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "profile", CSS_ACTIVE);
+			modelAndView.addObject(PAGE_STATE_PREFIX + "profile", CSS_ACTIVE);
 		}
 	}
 

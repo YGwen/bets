@@ -46,6 +46,7 @@ import de.fred4jupiter.fredbet.web.info.InfoType;
 @Component
 public class DataBasePopulator {
 
+	private static final int NUMBER_OF_DEMO_TEAMS = 2;
 	private static final int NUMBER_OF_DEMO_USERS = 12;
 
 	private static final String DEFAULT_PASSWORD_ADMIN_USER = FredbetConstants.TECHNICAL_USERNAME;
@@ -87,11 +88,11 @@ public class DataBasePopulator {
 		if (!isRunInIntegrationTest()) {
 			createDefaultUsers();
 			addRulesIfEmpty();
-			createDefaultTeam();
 		}
 
 		if (!isRunInIntegrationTest() && runtimeConfigurationService.loadRuntimeConfig().isCreateDemoData()) {
 			createDemoUsers();
+			createDefaultTeams();
 			createRandomMatches();
 		}
 
@@ -102,11 +103,27 @@ public class DataBasePopulator {
 		return environment.acceptsProfiles(FredBetProfile.INTEGRATION_TEST);
 	}
 
-	public void createDefaultTeam() {
+	public void createDefaultTeams() {
 
-		AppUser michael = userService.findAll().stream().filter(u -> u.getUsername().equals("michael")).findFirst().get();
-		Team team = TeamBuilder.create().withName("Michael's team").withCaptain(michael).build();
-		userService.updateUser(michael.getId(), teamService.createTeam(team), 10);
+		for (int i = 1; i <= NUMBER_OF_DEMO_TEAMS; i++) {
+			final String captainName = "test" + i;
+			AppUser captain = userService.findAll().stream().filter(u -> u.getUsername().equals(captainName)).findFirst().get();
+			Team team = TeamBuilder.create().withName("Team " + i).withCaptain(captain).build();
+			userService.updateUser(captain.getId(), teamService.createTeam(team), i);
+		}
+
+		List<AppUser> allUsers = userService.findAll();
+		List<Team> allTeams = teamService.findAll();
+		for (int i = 3; i <= NUMBER_OF_DEMO_USERS; i++) {
+			String usernameAndPassword = "test" + i;
+			AppUser user = allUsers.stream().filter(u -> u.getUsername().equals(usernameAndPassword)).findAny().get();
+			String teamName = "Team " + ((i-1)%2 + 1);
+			Team team = allTeams.stream().filter(t -> t.getName().equals(teamName)).findAny().get();
+			userService.updateUser(user.getId(), team, i == 12 ? 1 : i);
+
+		}
+
+
 	}
 
 	public void createRandomMatches() {
@@ -195,10 +212,10 @@ public class DataBasePopulator {
 		ClassPathResource classPathResource = new ClassPathResource("content/rules_de.txt");
 		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
 			IOUtils.copyLarge(classPathResource.getInputStream(), byteOut);
-			String rulesInGerman = byteOut.toString("UTF-8");
+			String rulesInENGLISH = byteOut.toString("UTF-8");
 
 			Locale locale = LocaleContextHolder.getLocale();
-			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, locale);
+			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInENGLISH, locale);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}

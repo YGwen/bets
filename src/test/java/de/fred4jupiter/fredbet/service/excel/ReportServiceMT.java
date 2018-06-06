@@ -34,7 +34,7 @@ public class ReportServiceMT {
 	private DataBasePopulator dataBasePopulator;
 
 	@Test
-	public void exportResultsToExcel() throws FileNotFoundException, IOException {
+	public void exportResultsToExcel() throws IOException {
 		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("fred", "feuerstein").withRole(FredBetRole.ROLE_USER).build();
 		dataBasePopulator.saveIfNotPresent(appUser);
 		
@@ -44,7 +44,7 @@ public class ReportServiceMT {
 		
 		File file = new File("d://Temp1/export.xlsx");
 
-		byte[] export = reportService.exportBetsToExcel(Locale.GERMAN);
+		byte[] export = reportService.exportBetsToExcel(Locale.ENGLISH);
 
 		IOUtils.write(export, new FileOutputStream(file));
 	}

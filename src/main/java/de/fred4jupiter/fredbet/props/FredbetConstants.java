@@ -24,7 +24,7 @@ public interface FredbetConstants {
 	
 	String JOKER_CSS_CLASS = "joker-betting";
 
-	Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
+	Country DEFAULT_FAVOURITE_COUNTRY = Country.ENGLISHY;
 
 	String DEFAULT_REST_PASSWORT = "fredbet";
 
