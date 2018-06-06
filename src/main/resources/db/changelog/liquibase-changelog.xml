@@ -270,7 +270,7 @@
 			<column name="shirt_number" type="int" />
 		</addColumn>
 
-		<addUniqueConstraint columnNames="team_captain" tableName="team" constraintName="idx_team_captain" />
+		<addUniqueConstraint columnNames="team_captain" tableName="team" constraintName="idx_unique_team_captain" />
 		<addUniqueConstraint columnNames="shirt_number, team_id" tableName="app_user" constraintName="idx_shirt" />
 
 		<createIndex tableName="team" indexName="idx_team_captain">

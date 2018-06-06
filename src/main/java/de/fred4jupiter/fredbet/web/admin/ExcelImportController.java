@@ -110,6 +110,31 @@ public class ExcelImportController {
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
+	public ModelAndView uploadUsers(ExcelUploadCommand excelUploadCommand, BindingResult result, RedirectAttributes redirect) {
+		try {
+			MultipartFile myFile = excelUploadCommand.getMyFile();
+			if (myFile == null || myFile.getBytes() == null || myFile.getBytes().length == 0) {
+				messageUtil.addErrorMsg(redirect, "excel.upload.msg.noFileGiven");
+				return new ModelAndView(REDIRECT_SHOW_PAGE);
+			}
+
+			if (!myFile.getContentType().equals(CONTENT_TYPE_EXCEL)) {
+				messageUtil.addErrorMsg(redirect, "excel.upload.msg.noExcelFile");
+				return new ModelAndView(REDIRECT_SHOW_PAGE);
+			}
+
+			excelImportService.importUsersFrromExcelAndSave(myFile.getBytes());
+
+			messageUtil.addInfoMsg(redirect, "excel.upload.msg.saved");
+		} catch (IOException | ExcelReadingException e) {
+			LOG.error(e.getMessage(), e);
+			messageUtil.addErrorMsg(redirect, "excel.upload.msg.failed", e.getMessage());
+		}
+
+		return new ModelAndView(REDIRECT_SHOW_PAGE);
+	}
+
 	private byte[] downloadTemplate() {
 		try {
 			return IOUtils.toByteArray(excelTemplateFile.getInputStream());

@@ -16,22 +16,33 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.security.FredBetRole;
+import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 public class ExcelImportService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ExcelImportService.class);
+
 	@Autowired
 	private MatchRepository matchRepository;
+
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private DataBasePopulator dataBasePopulator;
@@ -55,9 +66,25 @@ public class ExcelImportService {
 	@Transactional
 	public void importMatchesFromExcelAndSave(byte[] bytes) {
 		dataBasePopulator.deleteAllBetsAndMatches();
-		
 		List<Match> matches = importFromExcel(bytes);
 		matchRepository.saveAll(matches);
+	}
+
+	private List<AppUser> importUsersFromExcel(byte[] bytes) {
+		try (InputStream inp = new ByteArrayInputStream(bytes)) {
+			return importFromUserInputStream(inp);
+		} catch (IOException | EncryptedDocumentException | InvalidFormatException e) {
+			throw new ExcelReadingException(e.getMessage(), e);
+		}
+	}
+
+
+	@Transactional
+	public void importUsersFrromExcelAndSave(byte[] bytes) {
+		List<AppUser> users =importUsersFromExcel(bytes);
+		for(AppUser user : users) {
+			userService.createUser(user);
+		}
 	}
 
 	private List<Match> importFromInputStream(InputStream inp) throws IOException, InvalidFormatException {
@@ -77,6 +104,40 @@ public class ExcelImportService {
 
 			return matches;
 		}
+	}
+
+	private List<AppUser> importFromUserInputStream(InputStream inp) throws IOException, InvalidFormatException {
+		final List<AppUser> users = new ArrayList<>();
+
+		try (Workbook wb = WorkbookFactory.create(inp)) {
+			Sheet sheet = wb.getSheetAt(0);
+			for (Row row : sheet) {
+				if (row.getRowNum() == 0) {
+					continue;
+				}
+				AppUser user = convertRowToUser(row);
+				if (user != null) {
+					users.add(user);
+				}
+			}
+
+			return users;
+		}
+	}
+
+
+	private AppUser convertRowToUser(Row row) {
+		if (row == null || row.getCell(0) == null) {
+			return null;
+		}
+
+		String username = row.getCell(0).getStringCellValue();
+		String password = row.getCell(1).getStringCellValue();
+		LOG.info("{}, {}-",username, password);
+		AppUser user = AppUserBuilder.create().withUsernameAndPassword(username, password)
+				.withRole(FredBetRole.ROLE_USER).build();
+
+		return user;
 	}
 
 	private Match convertRowToMatch(Row row) {
