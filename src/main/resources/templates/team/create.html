@@ -13,7 +13,8 @@
 							<label for="teamName" th:text="#{team.create.name} + ':'"></label>
 							<input id="teamName" type="text" th:field="*{teamName}" class="form-control" size="30" maxlength="30" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamName')}" th:errors="*{teamName}">teamName Error</p>
-
+						</div>
+						<div class="form-group">
 							<label for="shirtNumber" th:text="#{team.shirt.number} + ':'"></label>
 							<select id="shirtNumber" th:field="*{shirtNumber}" class="form-control">
 								<option th:each="number : ${availableShirtNumbers}"

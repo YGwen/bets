@@ -26,7 +26,7 @@
 					<input type="hidden" th:field="*{numberOfJokersUsed}" class="form-control" />
 					<input type="hidden" th:field="*{maxJokers}" class="form-control" />
 					<input type="hidden" th:field="*{jokerEditable}" class="form-control" />
-					
+
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
@@ -66,7 +66,7 @@
 						</div>						
 						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
 							<div class="row">
-								<span class="bold" th:text="#{penalty.box.heading}"></span>
+								<span class="bold" style="color: white" th:text="#{penalty.box.heading}"></span>
 							</div>
 							<div class="row center color-vote penalty-height">
 								<div class="col-xs-6">
@@ -78,17 +78,6 @@
 							</div>								
 						</div>
 						<br/>
-						<div class="center" th:if="${betCommand.maxJokers gt 0}">
-							<div class="row" th:if="${betCommand.jokerEditable}">
-								<input type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
-								<label for="useJoker" th:text="#{betting.joker}"></label>
-								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
-									th:title="#{betting.joker.tooltip}"></span>
-							</div>	
-							<div class="row">
-								<span th:text="#{betting.joker.available(${betCommand.numberOfJokersUsed}, ${betCommand.maxJokers})}"></span>
-							</div>
-						</div>
 						<div class="row">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 							<a href="#" th:href="@{${'/matches#' + betCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>

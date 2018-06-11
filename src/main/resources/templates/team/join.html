@@ -18,6 +18,8 @@
                                 th:text="${team}">
                         </option>
                     </select>
+                </div>
+                <div class="form-group">
                     <label for="shirtNumber" th:text="#{team.shirt.number} + ':'"></label>
                     <select id="shirtNumber" th:field="*{selectedShirtNumber}" class="form-control">
                         <option th:each="number : ${availableShirtNumbers}"
