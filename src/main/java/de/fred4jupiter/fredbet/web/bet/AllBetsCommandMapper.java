@@ -49,6 +49,7 @@ public class AllBetsCommandMapper {
 
 		allBetsCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
 		allBetsCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
+		allBetsCommand.setNullMatchName(webMessageUtil.getNullMatchName());
 
 		allBetsCommand.setCountryTeamOne(match.getCountryOne());
 		allBetsCommand.setCountryTeamTwo(match.getCountryTwo());

@@ -88,6 +88,10 @@ public class WebMessageUtil {
 		return Validator.isNotNull(country) ? getCountryName(country) : teamName;
 	}
 
+	public String getNullMatchName() {
+		return messageSourceUtil.getMessageFor("bet.result.null", LocaleContextHolder.getLocale());
+	}
+
 	public static final class WebMessage {
 		private String cssClass;
 

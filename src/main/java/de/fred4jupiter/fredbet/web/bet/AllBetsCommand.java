@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import de.fred4jupiter.fredbet.domain.Bet;
@@ -30,5 +31,9 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
 	public void setMatch(Match match) {
 		this.match = match;
+	}
+
+	public BetStats getStats() {
+		return new BetStats(this);
 	}
 }

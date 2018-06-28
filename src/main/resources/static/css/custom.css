@@ -177,6 +177,10 @@ a.img-link  {
     background: repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* Standard syntax (must be last) */
 }
 
+.badge-good-bet {
+    background-color: red;
+}
+
 .imgsizing img {
 	width: 100%;
 	max-width: 600px;

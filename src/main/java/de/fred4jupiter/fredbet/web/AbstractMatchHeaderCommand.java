@@ -21,6 +21,15 @@ public abstract class AbstractMatchHeaderCommand {
 
 	private String teamNameOne;
 	private String teamNameTwo;
+	private String nullMatchName;
+
+	public String getNullMatchName() {
+		return nullMatchName;
+	}
+
+	public void setNullMatchName(String nullMatchName) {
+		this.nullMatchName = nullMatchName;
+	}
 
 	protected Group group;
 
