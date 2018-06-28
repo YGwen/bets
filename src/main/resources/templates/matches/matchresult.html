@@ -27,12 +27,12 @@
 							<div class="col-xs-6">
 								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
+								<span th:text="${matchResultCommand.teamNameOne}" class="name"></span>
 							</div>
 							<div class="col-xs-6">
 								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
+								<span th:text="${matchResultCommand.teamNameTwo}" class="name"></span>
 							</div>
 						</div>
 						<div class="row center">

@@ -56,6 +56,7 @@ public class RankingService {
 		UsernamePoints teamPoints = new UsernamePoints();
 		teamPoints.setUserName(teamListEntry.getKey().getName());
 		teamPoints.setTotalPoints(teamListEntry.getKey().getTeamPoints(teamListEntry.getValue()));
+		teamPoints.setTeamId(teamListEntry.getKey().getId());
 		return teamPoints;
 	}
 

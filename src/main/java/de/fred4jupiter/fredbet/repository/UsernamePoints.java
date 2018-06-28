@@ -11,6 +11,8 @@ public class UsernamePoints {
 
 	private String cssRankClass;
 
+	private Long teamId = 0L;
+
 	public String getUserName() {
 		return userName;
 	}
@@ -43,4 +45,11 @@ public class UsernamePoints {
 		this.cssRankClass = cssRankClass;
 	}
 
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
+	public Long getTeamId() {
+		return teamId;
+	}
 }

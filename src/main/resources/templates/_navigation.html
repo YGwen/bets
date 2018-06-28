@@ -101,7 +101,7 @@
 				        	</ul>
 				        </li>
 
-						<li><a href="#team" th:href="@{/team}" th:text="#{navigation.team}"></a></li>
+						<li th:if="${@webSecurityUtil.isUserPartOfTeam()}"><a href="#team" th:href="@{/team}" th:text="#{navigation.team}"></a></li>
 
 
 				        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">

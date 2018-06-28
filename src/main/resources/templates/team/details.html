@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{team.list.title}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="~{fragments/alert :: alert_headline}"></div>
+
+    <div class="row" th:replace="~{fragments/teamDetails :: teamDetails(${team})}">
+    </div>
+</div>
+</body>
+</html>

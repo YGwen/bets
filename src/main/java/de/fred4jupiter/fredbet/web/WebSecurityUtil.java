@@ -48,6 +48,10 @@ public class WebSecurityUtil {
 		}
 	}
 
+	public boolean isUserPartOfTeam() {
+		return securityService.getCurrentUser().getTeam() != null;
+	}
+
 	public boolean isUserLoggedIn() {
 		return securityService.isUserLoggedIn();
 	}

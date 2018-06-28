@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
     <title th:text="#{team.list.title}"></title>
 </head>
@@ -16,11 +15,10 @@
 
     <div class="row" th:if="${team == null}">
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <a class="btn btn-primary" role="button" th:href="@{/team/create}" th:text="#{team.createTeam}"></a>
-            or
-            <a class="btn btn-primary" role="button" th:href="@{/team/join}" th:text="#{team.joinTeam}"></a>
+            <p>Too bad, you haven't join a team and it's too late now ...</p>
         </div>
     </div>
+    
 </div>
 </body>
 </html>

@@ -35,7 +35,7 @@ public class DateUtilsUT {
 	public void formatByLocaleDE() {
 		LocalDateTime localDateTime = LocalDateTime.of(2017, 5, 20, 20, 25);
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC+02:00"));
-		assertEquals("20.05.2017, 20:25:00", DateUtils.formatByLocale(zonedDateTime, Locale.ENGLISH));
+		assertEquals("20.05.2017, 20:25:00", DateUtils.formatByLocale(zonedDateTime, Locale.GERMAN));
 	}
 
 	@Test

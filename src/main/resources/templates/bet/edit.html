@@ -32,12 +32,12 @@
 							<div class="col-xs-6">
 								<img class="flag big" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
 								<br/>
-								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
+								<span th:text="${betCommand.teamNameOne}" class="name"></span>
 							</div>
 							<div class="col-xs-6">
 								<img class="flag big" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
 								<br/>
-								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
+								<span th:text="${betCommand.teamNameTwo}" class="name"></span>
 							</div>
 						</div>
 						<div class="row center">
