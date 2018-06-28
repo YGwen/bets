@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.team;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -7,6 +8,7 @@ import java.util.stream.IntStream;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +23,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.domain.TeamBuilder;
+import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.RankingService;
 import de.fred4jupiter.fredbet.service.TeamAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.TeamService;
 import de.fred4jupiter.fredbet.service.UserService;
@@ -43,6 +48,11 @@ public class TeamController {
 	private UserService userService;
 	@Autowired
 	private WebMessageUtil messageUtil;
+	@Autowired
+	private RankingService rankingService;
+
+	@Autowired
+	private Environment environment;
 
 	@ModelAttribute("availableTeams")
 	public List<Team> availableTeams() {
@@ -73,12 +83,26 @@ public class TeamController {
 		}
 
 		Team team = teamService.findById(currentUser.getTeam().getId());
+		TeamDetailDto teamDetailsDto = convert(team);
 
-		return new ModelAndView("team/list", "team", team);
+		teamDetailsDto.getMembers().sort(Comparator.comparing(TeamMemberDto::getPoints).reversed());
+
+		for (TeamMemberDto memberDto : teamDetailsDto.getMembers().subList(0, 5)) {
+			memberDto.setCssRankClass("label-success");
+		}
+
+		return new ModelAndView("team/list", "team", teamDetailsDto);
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(RedirectAttributes redirect) {
+
+		boolean teamClosed = this.environment.getProperty("team.closed", Boolean.class);
+		if (teamClosed) {
+			messageUtil.addErrorMsg(redirect, "team.closed");
+			return new ModelAndView("redirect:/team");
+		}
+
 		if (userHasAlreadyTeam()) {
 			messageUtil.addErrorMsg(redirect, "user.has.already.team");
 			return new ModelAndView("redirect:/team");
@@ -86,9 +110,17 @@ public class TeamController {
 		return new ModelAndView(CREATE_TEAM_PAGE, "createTeamCommand", new CreateTeamCommand());
 	}
 
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView create(@Valid CreateTeamCommand createTeamCommand, BindingResult bindingResult, RedirectAttributes redirect,
 			ModelMap modelMap) {
+
+		boolean teamClosed = this.environment.getProperty("team.closed", Boolean.class);
+		if (teamClosed) {
+			messageUtil.addErrorMsg(redirect, "team.closed");
+			return new ModelAndView("redirect:/team");
+		}
+
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(CREATE_TEAM_PAGE, "createTeamCommand", createTeamCommand);
 		} else if (userHasAlreadyTeam()) {
@@ -118,6 +150,13 @@ public class TeamController {
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public ModelAndView join(RedirectAttributes redirect) {
+
+		boolean teamClosed = this.environment.getProperty("team.closed", Boolean.class);
+		if (teamClosed) {
+			messageUtil.addErrorMsg(redirect, "team.closed");
+			return new ModelAndView("redirect:/team");
+		}
+
 		if (userHasAlreadyTeam()) {
 			messageUtil.addErrorMsg(redirect, "user.has.already.team");
 			return new ModelAndView("redirect:/team");
@@ -129,10 +168,23 @@ public class TeamController {
 	}
 
 	@RequestMapping(value = "/join/{teamId}", method = RequestMethod.GET)
-	public ModelAndView showTeamDetails(Model model, @PathVariable("teamId") Long teamId) {
+	public ModelAndView showTeamDetailsForJoin(Model model, @PathVariable("teamId") Long teamId) {
 		Team selectedTeam = teamService.findById(teamId);
 		model.addAttribute("selectedTeam", selectedTeam);
 		return new ModelAndView("fragments/teamDetails :: teamDetails", "team", selectedTeam);
+	}
+
+	@RequestMapping(value = "/{teamId}", method = RequestMethod.GET)
+	public ModelAndView showTeamDetails(@PathVariable("teamId") Long teamId) {
+		Team team = teamService.findById(teamId);
+		TeamDetailDto teamDetailsDto = convert(team);
+		teamDetailsDto.getMembers().sort(Comparator.comparing(TeamMemberDto::getPoints).reversed());
+
+		for (TeamMemberDto memberDto : teamDetailsDto.getMembers().subList(0, 5)) {
+			memberDto.setCssRankClass("label-success");
+		}
+
+		return new ModelAndView("team/details", "team", teamDetailsDto);
 	}
 
 	@RequestMapping(value = "/assignedShirts/{teamId}", method = RequestMethod.GET, produces = "application/json")
@@ -144,6 +196,12 @@ public class TeamController {
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public ModelAndView join(@Valid JoinTeamCommand joinTeamCommand, BindingResult bindingResult, RedirectAttributes redirect,
 			ModelMap modelMap) {
+
+		boolean teamClosed = this.environment.getProperty("team.closed", Boolean.class);
+		if (teamClosed) {
+			messageUtil.addErrorMsg(redirect, "team.closed");
+			return new ModelAndView("redirect:/team");
+		}
 
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(JOIN_TEAM_PAGE, "joinTeamCommand", joinTeamCommand);
@@ -166,12 +224,35 @@ public class TeamController {
 			userService.updateUser(user.getId(), team, joinTeamCommand.getSelectedShirtNumber());
 			user.setTeam(team);
 			team.getMembers().add(user);
-		} catch (DataIntegrityViolationException e) {
+		}
+		catch (DataIntegrityViolationException e) {
 			messageUtil.addErrorMsg(modelMap, "shirt.number.already.assigned", joinTeamCommand.getSelectedShirtNumber(), team.getName());
 			return new ModelAndView(JOIN_TEAM_PAGE, "joinTeamCommand", joinTeamCommand);
 		}
 
 		messageUtil.addInfoMsg(redirect, "team.joined", team.getName());
 		return new ModelAndView("redirect:/team");
+	}
+
+	private TeamDetailDto convert(Team team) {
+
+		List<UsernamePoints> usernamePoints = rankingService.calculateCurrentRanking(RankingSelection.INDIVIDUAL);
+
+		TeamDetailDto teamDetailsDto = new TeamDetailDto();
+		teamDetailsDto.setCaptainName(team.getCaptain().getUsername());
+		teamDetailsDto.setName(team.getName());
+
+		for (AppUser appUser : team.getMembers()) {
+			TeamMemberDto member = new TeamMemberDto();
+			member.setShirtNumber(appUser.getShirtNumber());
+			member.setUserName(appUser.getUsername());
+			member.setPoints(
+					usernamePoints.stream().filter(u -> appUser.getUsername().equals(u.getUserName())).map(UsernamePoints::getTotalPoints)
+							.findAny().orElse(0));
+			teamDetailsDto.addMember(member);
+		}
+
+		return teamDetailsDto;
+
 	}
 }

@@ -62,4 +62,5 @@ public class RankingController {
 		}
 		return new ModelAndView("ranking/list", "rankings", rankings);
 	}
+
 }

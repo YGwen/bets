@@ -29,7 +29,7 @@ public class ExcelImportServiceIT extends AbstractIntegrationTest {
 		assertEquals(3, matches.size());
 
 		Match match1 = matches.get(0);
-		assertEquals(Country.ENGLISHY, match1.getCountryOne());
+		assertEquals(Country.GERMANY, match1.getCountryOne());
 		assertEquals(Country.BELGIUM, match1.getCountryTwo());
 		assertEquals(Group.GROUP_B, match1.getGroup());
 		assertEquals(LocalDateTime.of(2017, 6, 1, 18, 0), match1.getKickOffDate());

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Statistic;
+import de.fred4jupiter.fredbet.repository.CustomBetQuestionRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.StatisticRepository;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
@@ -22,16 +24,19 @@ public class StatisticService {
 
 	private final StatisticRepository statisticRepository;
 
+	private final CustomBetQuestionRepository customBetQuestionRepository;
+
 	private final ExtraBetRepository extraBetRepository;
 
 	private final RuntimeConfigurationService runtimeConfigurationService;
 
 	@Autowired
 	public StatisticService(StatisticRepository statisticRepository, RuntimeConfigurationService runtimeConfigurationService,
-			ExtraBetRepository extraBetRepository) {
+			ExtraBetRepository extraBetRepository, CustomBetQuestionRepository customBetQuestionRepository) {
 		this.statisticRepository = statisticRepository;
 		this.runtimeConfigurationService = runtimeConfigurationService;
 		this.extraBetRepository = extraBetRepository;
+		this.customBetQuestionRepository = customBetQuestionRepository;
 	}
 
 	public Country getFavouriteCountry() {
@@ -107,6 +112,14 @@ public class StatisticService {
 		Map<String, Integer> userExtraBetPoints = new HashMap<>();
 
 		extraBets.forEach(extraBet -> userExtraBetPoints.put(extraBet.getUserName(), extraBet.getPoints()));
+
+		List<Object[]> customBets = customBetQuestionRepository.getBonusPoints();
+
+		customBets.forEach(customBet -> {
+				String username = (String) customBet[0];
+				Integer currentPoints = userExtraBetPoints.getOrDefault(username, 0);
+				userExtraBetPoints.put(username, currentPoints + ((BigDecimal) customBet[1]).intValue());
+		});
 		return userExtraBetPoints;
 	}
 }

@@ -82,7 +82,7 @@ public class PointsCalculationServiceUT {
 		Bet bet = createBet(4, 4);
 		bet.setPenaltyWinnerOne(true);
 
-		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(8, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class PointsCalculationServiceUT {
 		Bet bet = createBet(0, 0);
 		bet.setPenaltyWinnerOne(false);
 
-		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(8, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class PointsCalculationServiceUT {
 		bet.setPenaltyWinnerOne(false);
 		bet.setJoker(true);
 
-		assertEquals(6, pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(3, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 	
 	@Test
