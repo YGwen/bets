@@ -43,7 +43,7 @@
 										<div class="right">
 											<span class="label label-as-badge big-badge label-success" th:text="${data.getLabel()}" th:classappend="${data.isHighlight() ? 'badge-good-bet':''}"></span>
 											<span>&nbsp;</span>
-											<span class="label label-as-badge big-badge label-warning" th:text="${data.getValue().doubleValue() * 100 + '%'}"></span>
+											<span class="label label-as-badge big-badge label-warning" th:text="${data.getValue().movePointRight(2) + '%'}"></span>
 										</div>
 									</div>
 								</div>
